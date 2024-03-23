@@ -37,13 +37,12 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public Match makeMove(Long id, MoveRequest request) {
+    public Match makeMove(Long id, Move move) {
         Match match = matchRepository.findById(id)
                 .orElseThrow(() -> new MatchNotFoundException(id));
-        Move move = new Move(request.getPlayer(), request.getRow(), request.getCol());
 
         if (!gameService.isValidMove(match, move)) {
-            throw new InvalidMoveException(request);
+            throw new InvalidMoveException();
         }
 
         gameService.applyMove(match, move);

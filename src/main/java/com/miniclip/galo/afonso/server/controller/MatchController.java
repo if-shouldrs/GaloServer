@@ -2,7 +2,9 @@ package com.miniclip.galo.afonso.server.controller;
 
 import com.miniclip.galo.afonso.server.dto.MatchIdDto;
 import com.miniclip.galo.afonso.server.dto.MoveRequest;
+import com.miniclip.galo.afonso.server.exception.InvalidMoveException;
 import com.miniclip.galo.afonso.server.model.Match;
+import com.miniclip.galo.afonso.server.model.Move;
 import com.miniclip.galo.afonso.server.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,8 +45,14 @@ public class MatchController {
     }
 
     @PutMapping("/{id}/move")
-    public ResponseEntity<Map<String, Object>> makeMove(@PathVariable Long id, @RequestBody MoveRequest moveRequest) {
-        Match updatedMatch = matchService.makeMove(id, moveRequest);
+    public ResponseEntity<Map<String, Object>> makeMove(@PathVariable Long id, @RequestBody MoveRequest request) {
+        Move move = new Move(request.getPlayer(), request.getRow(), request.getCol());
+        Match updatedMatch;
+        try {
+            updatedMatch = matchService.makeMove(id, move);
+        } catch (InvalidMoveException e) {
+            throw new InvalidMoveException(request);
+        }
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", updatedMatch.getStatus());
         responseBody.put("board", updatedMatch.getBoardState());
