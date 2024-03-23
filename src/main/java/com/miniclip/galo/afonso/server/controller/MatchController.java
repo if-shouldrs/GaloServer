@@ -10,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/matches")
@@ -24,15 +27,20 @@ public class MatchController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> createMatch() {
+    public ResponseEntity<Map<String, Long>> createMatch() {
         Match match = matchService.createMatch();
-        return new ResponseEntity<>(match.getId(), HttpStatus.CREATED);
+        Map<String, Long> responseBody = Collections.singletonMap("match_id", match.getId());
+        return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<String> getMatchState(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> getMatchState(@PathVariable Long id) {
         Match match = matchService.getMatchById(id);
-        return ResponseEntity.ok(match.getGameState());
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", match.getStatus());
+        responseBody.put("board", match.getBoardState());
+        responseBody.put("turn", match.getTurn());
+        return ResponseEntity.ok(responseBody);
     }
 
     @PutMapping("/{id}/move")
