@@ -1,14 +1,14 @@
 package com.miniclip.galo.afonso.server.service;
 
-import com.miniclip.galo.afonso.server.dto.MoveRequest;
 import com.miniclip.galo.afonso.server.model.Match;
 import com.miniclip.galo.afonso.server.model.MatchStatus;
+import com.miniclip.galo.afonso.server.model.Move;
 import com.miniclip.galo.afonso.server.model.Player;
 
 public class GameServiceImpl implements GameService {
 
     @Override
-    public boolean isValidMove(Match match, MoveRequest move) {
+    public boolean isValidMove(Match match, Move move) {
         if (!MatchStatus.RUNNING.equals(match.getStatus())) {
             return false;
         }
@@ -32,7 +32,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void applyMove(Match match, MoveRequest move) {
+    public void applyMove(Match match, Move move) {
         int position = (move.getRow() * 4) + move.getCol();
 
         // Replace character at the move's position with the player's character
@@ -45,7 +45,7 @@ public class GameServiceImpl implements GameService {
         processMatchStatus(match, move);
     }
 
-    private void processMatchStatus(Match match, MoveRequest move) {
+    private void processMatchStatus(Match match, Move move) {
         MatchStatus status = MatchStatus.RUNNING;
 
         if (isWin(match, move)) {
@@ -60,7 +60,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public boolean isWin(Match match, MoveRequest move) {
+    public boolean isWin(Match match, Move move) {
         char symbol = move.getPlayer().getSymbol();
         String board = match.getBoardState();
         return isStraightLineWin(board, symbol) || isDiagonalWin(board, symbol);

@@ -4,6 +4,7 @@ import com.miniclip.galo.afonso.server.dto.MoveRequest;
 import com.miniclip.galo.afonso.server.exception.InvalidMoveException;
 import com.miniclip.galo.afonso.server.exception.MatchNotFoundException;
 import com.miniclip.galo.afonso.server.model.Match;
+import com.miniclip.galo.afonso.server.model.Move;
 import com.miniclip.galo.afonso.server.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,12 +37,13 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public Match makeMove(Long id, MoveRequest move) {
+    public Match makeMove(Long id, MoveRequest request) {
         Match match = matchRepository.findById(id)
                 .orElseThrow(() -> new MatchNotFoundException(id));
+        Move move = new Move(request.getPlayer(), request.getRow(), request.getCol());
 
         if (!gameService.isValidMove(match, move)) {
-            throw new InvalidMoveException(move);
+            throw new InvalidMoveException(request);
         }
 
         gameService.applyMove(match, move);

@@ -1,7 +1,7 @@
 package com.miniclip.galo.afonso.server.service;
 
-import com.miniclip.galo.afonso.server.dto.MoveRequest;
 import com.miniclip.galo.afonso.server.model.Match;
+import com.miniclip.galo.afonso.server.model.Move;
 import com.miniclip.galo.afonso.server.model.Player;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,27 +24,27 @@ public class GameServiceTest {
     @Test
     void isValidMove_ReturnsTrue_WhenOpeningTopLeftCorner() {
         Match match = Match.newInstance();
-        MoveRequest move = new MoveRequest(Player.PLAYER1, 0, 0);
+        Move move = new Move(Player.PLAYER1, 0, 0);
         assertTrue(gameService.isValidMove(match, move));
     }
     @Test
     void isValidMove_ReturnsTrue_WhenOpeningBottomRightCorner() {
         Match match = Match.newInstance();
-        MoveRequest move = new MoveRequest(Player.PLAYER1, 2, 2);
+        Move move = new Move(Player.PLAYER1, 2, 2);
         assertTrue(gameService.isValidMove(match, move));
     }
 
     @Test
     void isValidMove_ReturnsFalse_WhenMoveIsOutOfBounds() {
         Match match = Match.newInstance();
-        MoveRequest move = new MoveRequest(Player.PLAYER1, 3, 3); // Out of board bounds
+        Move move = new Move(Player.PLAYER1, 3, 3); // Out of board bounds
         assertFalse(gameService.isValidMove(match, move));
     }
 
     @Test
     void isValidMove_ReturnsFalse_WhenWrongPlayerTriesValidMoves() {
         Match match = Match.newInstance();
-        MoveRequest move = new MoveRequest(Player.PLAYER2, 0, 0); // PLAYER2 tries to move first
+        Move move = new Move(Player.PLAYER2, 0, 0); // PLAYER2 tries to move first
         assertFalse(gameService.isValidMove(match, move));
     }
 
@@ -54,7 +54,7 @@ public class GameServiceTest {
         Match match = Match.newInstance();
         match.setBoardState(boardState);
         // The move that won the game
-        MoveRequest move = new MoveRequest(Player.PLAYER1, row, col);
+        Move move = new Move(Player.PLAYER1, row, col);
         assertTrue(gameService.isWin(match, move));
     }
 
@@ -75,7 +75,7 @@ public class GameServiceTest {
         Match match = Match.newInstance();
         match.setBoardState(boardState);
         // The move that won the game
-        MoveRequest move = new MoveRequest(Player.PLAYER1, row, col);
+        Move move = new Move(Player.PLAYER1, row, col);
         assertTrue(gameService.isWin(match, move));
     }
 
