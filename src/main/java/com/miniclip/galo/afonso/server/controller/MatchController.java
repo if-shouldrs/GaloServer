@@ -1,5 +1,7 @@
 package com.miniclip.galo.afonso.server.controller;
 
+import com.miniclip.galo.afonso.server.exception.InvalidMoveException;
+import com.miniclip.galo.afonso.server.exception.MatchNotFoundException;
 import com.miniclip.galo.afonso.server.model.Match;
 import com.miniclip.galo.afonso.server.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,16 @@ public class MatchController {
     public ResponseEntity<List<Long>> listMatches() {
         List<Long> matchIds = matchService.listAllMatchIds();
         return ResponseEntity.ok(matchIds);
+    }
+
+    @ExceptionHandler(MatchNotFoundException.class)
+    public ResponseEntity<Object> handleMatchNotFoundException(MatchNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidMoveException.class)
+    public ResponseEntity<Object> handleInvalidMoveException(InvalidMoveException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 }

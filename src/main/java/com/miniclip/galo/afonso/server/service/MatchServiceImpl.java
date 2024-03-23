@@ -27,7 +27,6 @@ public class MatchServiceImpl implements MatchService {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-
     @Override
     public Match makeMove(Long id, String move) {
         throw new UnsupportedOperationException("Not implemented yet");
