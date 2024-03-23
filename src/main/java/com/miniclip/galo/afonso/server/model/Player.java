@@ -35,4 +35,9 @@ public enum Player {
         };
     }
 
+    @Override
+    public String toString() {
+        return getSymbol() + "";
+    }
+
 }
