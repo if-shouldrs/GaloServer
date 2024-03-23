@@ -1,5 +1,6 @@
 package com.miniclip.galo.afonso.server.service;
 
+import com.miniclip.galo.afonso.server.dto.MoveRequest;
 import com.miniclip.galo.afonso.server.exception.InvalidMoveException;
 import com.miniclip.galo.afonso.server.exception.MatchNotFoundException;
 import com.miniclip.galo.afonso.server.model.Match;
@@ -34,7 +35,7 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public Match makeMove(Long id, String move) {
+    public Match makeMove(Long id, MoveRequest move) {
         Match match = matchRepository.findById(id)
                 .orElseThrow(() -> new MatchNotFoundException(id));
 
@@ -46,11 +47,11 @@ public class MatchServiceImpl implements MatchService {
         return matchRepository.save(match);
     }
 
-    private boolean isValidMove(Match match, String move) {
+    private boolean isValidMove(Match match, MoveRequest move) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
-    private void applyMove(Match match, String move) {
+    private void applyMove(Match match, MoveRequest move) {
         throw new UnsupportedOperationException("Not implemented");
     }
 

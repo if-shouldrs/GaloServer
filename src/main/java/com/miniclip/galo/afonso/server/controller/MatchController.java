@@ -1,5 +1,6 @@
 package com.miniclip.galo.afonso.server.controller;
 
+import com.miniclip.galo.afonso.server.dto.MoveRequest;
 import com.miniclip.galo.afonso.server.exception.InvalidMoveException;
 import com.miniclip.galo.afonso.server.exception.MatchNotFoundException;
 import com.miniclip.galo.afonso.server.model.Match;
@@ -35,9 +36,13 @@ public class MatchController {
     }
 
     @PutMapping("/{id}/move")
-    public ResponseEntity<String> makeMove(@PathVariable Long id, @RequestBody String move) {
-        Match updatedMatch = matchService.makeMove(id, move);
-        return ResponseEntity.ok(updatedMatch.getGameState());
+    public ResponseEntity<Map<String, Object>> makeMove(@PathVariable Long id, @RequestBody MoveRequest moveRequest) {
+        Match updatedMatch = matchService.makeMove(id, moveRequest);
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", updatedMatch.getStatus());
+        responseBody.put("board", updatedMatch.getBoardState());
+        responseBody.put("turn", updatedMatch.getTurn());
+        return ResponseEntity.ok(responseBody);
     }
 
     @GetMapping
