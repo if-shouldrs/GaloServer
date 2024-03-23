@@ -1,11 +1,14 @@
 package com.miniclip.galo.afonso.server.service;
 
+import com.miniclip.galo.afonso.server.exception.InvalidMoveException;
+import com.miniclip.galo.afonso.server.exception.MatchNotFoundException;
 import com.miniclip.galo.afonso.server.model.Match;
 import com.miniclip.galo.afonso.server.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MatchServiceImpl implements MatchService {
@@ -19,22 +22,42 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public Match createMatch() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        Match newMatch = new Match();
+        newMatch.setGameState("_________");
+        return matchRepository.save(newMatch);
     }
 
     @Override
     public Match getMatchById(Long id) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return matchRepository.findById(id)
+                .orElseThrow(() -> new MatchNotFoundException(id));
     }
 
     @Override
     public Match makeMove(Long id, String move) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        Match match = matchRepository.findById(id)
+                .orElseThrow(() -> new MatchNotFoundException(id));
+
+        if (!isValidMove(match, move)) {
+            throw new InvalidMoveException(move);
+        }
+
+        applyMove(match, move);
+        return matchRepository.save(match);
     }
 
+    private boolean isValidMove(Match match, String move) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    private void applyMove(Match match, String move) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
 
     @Override
     public List<Long> listAllMatchIds() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return matchRepository.findAll().stream()
+                .map(Match::getId)
+                .collect(Collectors.toList());
     }
 }
