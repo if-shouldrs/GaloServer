@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(classes = GameServiceImpl.class)
+@SpringBootTest
 public class GameServiceTest {
 
     @Autowired
