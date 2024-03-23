@@ -23,7 +23,7 @@ public class GameServiceImpl implements GameService {
         int position = (row * 4) + col;
 
         // Check if the chosen position is empty
-        if (Character.isWhitespace(match.getBoardState().charAt(position))) {
+        if (!Character.isWhitespace(match.getBoardState().charAt(position))) {
             return false;
         }
 
