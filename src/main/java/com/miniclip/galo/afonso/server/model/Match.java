@@ -14,7 +14,7 @@ public class Match {
     private Long id;
     private String boardState;
     private MatchStatus status;
-    private String turn;
+    private Player turn;
 
     /**
      * Creates an instance of Match with a clean state ready to be played.
@@ -24,7 +24,7 @@ public class Match {
         Match match = new Match();
         match.boardState = "   ,   ,   ";
         match.status = MatchStatus.RUNNING;
-        match.turn = "X";
+        match.turn = Player.PLAYER1;
         return match;
     }
 
