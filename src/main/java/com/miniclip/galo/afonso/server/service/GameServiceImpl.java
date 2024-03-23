@@ -63,23 +63,27 @@ public class GameServiceImpl implements GameService {
     public boolean isWin(Match match, MoveRequest move) {
         char symbol = move.getPlayer().getSymbol();
         String board = match.getBoardState();
+        return isStraightLineWin(board, symbol) || isDiagonalWin(board, symbol);
+    }
 
-        // Check rows and columns
+    @Override
+    public boolean isTie(String boardState) {
+        return !boardState.contains(" ");
+    }
+
+    private static boolean isStraightLineWin(String board, char symbol) {
         for (int i = 0; i < 3; i++) {
             if ((board.charAt(i * 4) == symbol && board.charAt(i * 4 + 1) == symbol && board.charAt(i * 4 + 2) == symbol) || // Rows
                     (board.charAt(i) == symbol && board.charAt(4 + i) == symbol && board.charAt(8 + i) == symbol)) { // Columns
                 return true;
             }
         }
-
-        // Check diagonals
-        return (board.charAt(0) == symbol && board.charAt(5) == symbol && board.charAt(10) == symbol) // Left-to-right
-                || (board.charAt(2) == symbol && board.charAt(5) == symbol && board.charAt(8) == symbol); // Right-to-left
+        return false;
     }
 
-    @Override
-    public boolean isTie(String boardState) {
-        return !boardState.contains(" ");
+    private static boolean isDiagonalWin(String board, char symbol) {
+        return (board.charAt(0) == symbol && board.charAt(5) == symbol && board.charAt(10) == symbol) // Left-to-right
+                || (board.charAt(2) == symbol && board.charAt(5) == symbol && board.charAt(8) == symbol); // Right-to-left
     }
     
 }
