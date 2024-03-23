@@ -1,6 +1,8 @@
 package com.miniclip.galo.afonso.server.controller;
 
+import com.miniclip.galo.afonso.server.dto.MatchDto;
 import com.miniclip.galo.afonso.server.dto.MatchIdDto;
+import com.miniclip.galo.afonso.server.dto.MatchListDto;
 import com.miniclip.galo.afonso.server.dto.MoveRequest;
 import com.miniclip.galo.afonso.server.exception.InvalidMoveException;
 import com.miniclip.galo.afonso.server.model.Match;
@@ -16,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+
 @RestController
 @RequestMapping("/matches")
 public class MatchController {
@@ -28,24 +32,25 @@ public class MatchController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Long>> createMatch() {
+    public ResponseEntity<MatchIdDto> createMatch() {
         Match match = matchService.createMatch();
-        Map<String, Long> responseBody = Collections.singletonMap("match_id", match.getId());
-        return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
+        MatchIdDto matchIdDto = new MatchIdDto(match.getId());
+        return new ResponseEntity<>(matchIdDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getMatchState(@PathVariable Long id) {
+    public ResponseEntity<MatchDto> getMatchState(@PathVariable Long id) {
         Match match = matchService.getMatchById(id);
-        Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("status", match.getStatus());
-        responseBody.put("board", match.getBoardState());
-        responseBody.put("turn", match.getTurn());
-        return ResponseEntity.ok(responseBody);
+        MatchDto matchDto = new MatchDto(
+                match.getBoardState(),
+                match.getStatus().name(),
+                match.getTurn().getSymbol()
+        );
+        return ResponseEntity.ok(matchDto);
     }
 
     @PutMapping("/{id}/move")
-    public ResponseEntity<Map<String, Object>> makeMove(@PathVariable Long id, @RequestBody MoveRequest request) {
+    public ResponseEntity<MatchDto> makeMove(@PathVariable Long id, @RequestBody MoveRequest request) {
         Move move = new Move(request.getPlayer(), request.getRow(), request.getCol());
         Match updatedMatch;
         try {
@@ -53,21 +58,22 @@ public class MatchController {
         } catch (InvalidMoveException e) {
             throw new InvalidMoveException(request);
         }
-        Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("status", updatedMatch.getStatus());
-        responseBody.put("board", updatedMatch.getBoardState());
-        responseBody.put("turn", updatedMatch.getTurn());
-        return ResponseEntity.ok(responseBody);
+        MatchDto matchDto = new MatchDto(
+                updatedMatch.getBoardState(),
+                updatedMatch.getStatus().name(),
+                updatedMatch.getTurn().getSymbol()
+        );
+        return ResponseEntity.ok(matchDto);
     }
 
     @GetMapping
-    public ResponseEntity<Map<String, List<MatchIdDto>>> listMatches() {
+    public ResponseEntity<MatchListDto> listMatches() {
         List<Match> matches = matchService.listAllMatches();
         List<MatchIdDto> ids = matches.stream()
                 .map(match -> new MatchIdDto(match.getId()))
                 .toList();
-        Map<String, List<MatchIdDto>> responseBody = Collections.singletonMap("matches", ids);
-        return ResponseEntity.ok(responseBody);
+        MatchListDto matchListDto = new MatchListDto(ids);
+        return ResponseEntity.ok(matchListDto);
     }
 
 }
