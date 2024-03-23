@@ -4,7 +4,9 @@ import com.miniclip.galo.afonso.server.model.Match;
 import com.miniclip.galo.afonso.server.model.MatchStatus;
 import com.miniclip.galo.afonso.server.model.Move;
 import com.miniclip.galo.afonso.server.model.Player;
+import org.springframework.stereotype.Service;
 
+@Service
 public class GameServiceImpl implements GameService {
 
     @Override
