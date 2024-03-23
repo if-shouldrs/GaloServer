@@ -4,8 +4,6 @@ import com.miniclip.galo.afonso.server.dto.MoveRequest;
 import com.miniclip.galo.afonso.server.exception.InvalidMoveException;
 import com.miniclip.galo.afonso.server.exception.MatchNotFoundException;
 import com.miniclip.galo.afonso.server.model.Match;
-import com.miniclip.galo.afonso.server.model.MatchStatus;
-import com.miniclip.galo.afonso.server.model.Player;
 import com.miniclip.galo.afonso.server.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
