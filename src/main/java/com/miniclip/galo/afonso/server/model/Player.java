@@ -2,6 +2,7 @@ package com.miniclip.galo.afonso.server.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.miniclip.galo.afonso.server.exception.InvalidPlayerException;
 
 public enum Player {
     PLAYER1('X'),
@@ -23,7 +24,7 @@ public enum Player {
         return switch (symbol) {
             case 'X' -> PLAYER1;
             case 'O' -> PLAYER2;
-            default -> throw new IllegalArgumentException("Invalid symbol: " + symbol);
+            default -> throw new InvalidPlayerException(symbol);
         };
     }
 
