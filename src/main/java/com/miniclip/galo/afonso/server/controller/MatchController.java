@@ -1,5 +1,6 @@
 package com.miniclip.galo.afonso.server.controller;
 
+import com.miniclip.galo.afonso.server.dto.MatchIdDto;
 import com.miniclip.galo.afonso.server.dto.MoveRequest;
 import com.miniclip.galo.afonso.server.exception.InvalidMoveException;
 import com.miniclip.galo.afonso.server.exception.MatchNotFoundException;
@@ -10,7 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/matches")
@@ -51,15 +55,12 @@ public class MatchController {
     }
 
     @GetMapping
-    //listMatches
-    // Returns a key "matches", where the the value is a list where each element has a match_id key and corresponding value
-    public ResponseEntity<Map<String, List<Map<String, Long>>>> listMatches() {
-        List<Match> matches = matchService.listAllMatchIds();
-        List<Map<String, Long>> matchesList = new ArrayList<>();
-        for (Match match : matches) {
-            matchesList.add(Collections.singletonMap("match_id", match.getId()));
-        }
-        Map<String, List<Map<String, Long>>> responseBody = Collections.singletonMap("matches", matchesList);
+    public ResponseEntity<Map<String, List<MatchIdDto>>> listMatches() {
+        List<Match> matches = matchService.listAllMatches();
+        List<MatchIdDto> ids = matches.stream()
+                .map(match -> new MatchIdDto(match.getId()))
+                .toList();
+        Map<String, List<MatchIdDto>> responseBody = Collections.singletonMap("matches", ids);
         return ResponseEntity.ok(responseBody);
     }
 
