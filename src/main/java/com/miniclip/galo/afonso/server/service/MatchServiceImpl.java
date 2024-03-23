@@ -55,7 +55,7 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<Match> listAllMatchIds() {
+    public List<Match> listAllMatches() {
         return new ArrayList<>(matchRepository.findAll());
     }
 }
