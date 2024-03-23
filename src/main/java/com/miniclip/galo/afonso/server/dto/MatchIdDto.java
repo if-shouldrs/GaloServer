@@ -8,4 +8,3 @@ import lombok.Data;
 public class MatchIdDto {
     private Long matchId;
 }
-
