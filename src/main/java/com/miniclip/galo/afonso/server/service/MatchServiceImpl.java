@@ -8,8 +8,8 @@ import com.miniclip.galo.afonso.server.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MatchServiceImpl implements MatchService {
@@ -55,9 +55,7 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<Long> listAllMatchIds() {
-        return matchRepository.findAll().stream()
-                .map(Match::getId)
-                .collect(Collectors.toList());
+    public List<Match> listAllMatchIds() {
+        return new ArrayList<>(matchRepository.findAll());
     }
 }

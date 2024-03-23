@@ -10,10 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/matches")
@@ -54,9 +51,16 @@ public class MatchController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Long>> listMatches() {
-        List<Long> matchIds = matchService.listAllMatchIds();
-        return ResponseEntity.ok(matchIds);
+    //listMatches
+    // Returns a key "matches", where the the value is a list where each element has a match_id key and corresponding value
+    public ResponseEntity<Map<String, List<Map<String, Long>>>> listMatches() {
+        List<Match> matches = matchService.listAllMatchIds();
+        List<Map<String, Long>> matchesList = new ArrayList<>();
+        for (Match match : matches) {
+            matchesList.add(Collections.singletonMap("match_id", match.getId()));
+        }
+        Map<String, List<Map<String, Long>>> responseBody = Collections.singletonMap("matches", matchesList);
+        return ResponseEntity.ok(responseBody);
     }
 
     @ExceptionHandler(MatchNotFoundException.class)
