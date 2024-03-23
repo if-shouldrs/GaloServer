@@ -64,14 +64,4 @@ public class MatchController {
         return ResponseEntity.ok(responseBody);
     }
 
-    @ExceptionHandler(MatchNotFoundException.class)
-    public ResponseEntity<Object> handleMatchNotFoundException(MatchNotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(InvalidMoveException.class)
-    public ResponseEntity<Object> handleInvalidMoveException(InvalidMoveException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
 }
