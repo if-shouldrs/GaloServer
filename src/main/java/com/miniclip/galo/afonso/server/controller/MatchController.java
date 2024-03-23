@@ -3,7 +3,7 @@ package com.miniclip.galo.afonso.server.controller;
 import com.miniclip.galo.afonso.server.dto.MatchDto;
 import com.miniclip.galo.afonso.server.dto.MatchIdDto;
 import com.miniclip.galo.afonso.server.dto.MatchListDto;
-import com.miniclip.galo.afonso.server.dto.MoveRequest;
+import com.miniclip.galo.afonso.server.dto.MoveRequestDto;
 import com.miniclip.galo.afonso.server.exception.InvalidMoveException;
 import com.miniclip.galo.afonso.server.model.Match;
 import com.miniclip.galo.afonso.server.model.Move;
@@ -13,12 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @RestController
 @RequestMapping("/matches")
@@ -50,7 +45,7 @@ public class MatchController {
     }
 
     @PutMapping("/{id}/move")
-    public ResponseEntity<MatchDto> makeMove(@PathVariable Long id, @RequestBody MoveRequest request) {
+    public ResponseEntity<MatchDto> makeMove(@PathVariable Long id, @RequestBody MoveRequestDto request) {
         Move move = new Move(request.getPlayer(), request.getRow(), request.getCol());
         Match updatedMatch;
         try {

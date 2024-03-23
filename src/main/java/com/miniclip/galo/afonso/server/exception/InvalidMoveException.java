@@ -1,6 +1,6 @@
 package com.miniclip.galo.afonso.server.exception;
 
-import com.miniclip.galo.afonso.server.dto.MoveRequest;
+import com.miniclip.galo.afonso.server.dto.MoveRequestDto;
 
 public class InvalidMoveException extends RuntimeException {
 
@@ -8,7 +8,7 @@ public class InvalidMoveException extends RuntimeException {
         super("Invalid move");
     }
 
-    public InvalidMoveException(MoveRequest move) {
+    public InvalidMoveException(MoveRequestDto move) {
         super("Invalid move: " + move);
     }
 

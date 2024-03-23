@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MoveRequest {
+public class MoveRequestDto {
     private Player player;
     private int row;
     private int col;
