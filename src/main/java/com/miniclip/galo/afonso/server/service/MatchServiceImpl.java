@@ -23,8 +23,7 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public Match createMatch() {
-        Match newMatch = new Match();
-        newMatch.setGameState("_________");
+        Match newMatch = Match.newInstance();
         return matchRepository.save(newMatch);
     }
 

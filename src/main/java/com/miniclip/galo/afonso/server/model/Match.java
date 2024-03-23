@@ -12,5 +12,20 @@ public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String gameState;
+    private String boardState;
+    private MatchStatus status;
+    private String turn;
+
+    /**
+     * Creates an instance of Match with a clean state ready to be played.
+     * @return a fresh playable instance of Match
+     */
+    public static Match newInstance() {
+        Match match = new Match();
+        match.boardState = "   ,   ,   ";
+        match.status = MatchStatus.RUNNING;
+        match.turn = "X";
+        return match;
+    }
+
 }
