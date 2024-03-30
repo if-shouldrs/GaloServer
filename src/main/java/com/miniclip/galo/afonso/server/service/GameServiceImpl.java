@@ -53,7 +53,7 @@ public class GameServiceImpl implements GameService {
         if (isWin(match, move)) {
             status = move.getPlayer().equals(Player.PLAYER1) ? MatchStatus.PLAYER1WON : MatchStatus.PLAYER2WON;
         } else if (isTie(match.getBoardState())) {
-            match.setStatus(MatchStatus.TIE);
+            status = MatchStatus.TIE;
         } else {
             match.setTurn(Player.getNext(move.getPlayer()));
         }
