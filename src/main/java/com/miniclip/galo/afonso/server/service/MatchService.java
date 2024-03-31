@@ -10,6 +10,6 @@ public interface MatchService {
     Match createMatch();
     Match getMatchById(Long id);
     Match makeMove(Long id, Move move);
-    List<Match> listAllMatches();
+    List<Match> listOngoingMatches();
 
 }

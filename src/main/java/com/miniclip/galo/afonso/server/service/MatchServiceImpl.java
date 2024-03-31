@@ -3,6 +3,7 @@ package com.miniclip.galo.afonso.server.service;
 import com.miniclip.galo.afonso.server.exception.InvalidMoveException;
 import com.miniclip.galo.afonso.server.exception.MatchNotFoundException;
 import com.miniclip.galo.afonso.server.model.Match;
+import com.miniclip.galo.afonso.server.model.MatchStatus;
 import com.miniclip.galo.afonso.server.model.Move;
 import com.miniclip.galo.afonso.server.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,8 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<Match> listAllMatches() {
-        return new ArrayList<>(matchRepository.findAll());
+    public List<Match> listOngoingMatches() {
+        return new ArrayList<>(matchRepository.findByStatus(MatchStatus.RUNNING));
     }
 
 }

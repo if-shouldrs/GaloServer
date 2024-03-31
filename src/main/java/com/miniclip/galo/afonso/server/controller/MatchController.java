@@ -64,7 +64,7 @@ public class MatchController {
 
     @GetMapping
     public ResponseEntity<MatchListDto> listMatches() {
-        List<Match> matches = matchService.listAllMatches();
+        List<Match> matches = matchService.listOngoingMatches();
         List<MatchIdDto> ids = matches.stream()
                 .map(match -> new MatchIdDto(match.getId()))
                 .toList();
