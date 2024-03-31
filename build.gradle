@@ -33,3 +33,40 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// --- Docker tasks
+
+tasks.register('buildDockerImage', Exec) {
+	group = 'docker'
+	dependsOn bootJar
+	def projectName = rootProject.name.toLowerCase();
+	doFirst {
+		println "Building Docker image for $projectName: version $version"
+	}
+	commandLine 'docker', 'build', '-t', "$projectName:$version",
+			'--build-arg', "APP_NAME=${rootProject.name}",
+			'--build-arg', "APP_VERSION=$version", '.'
+}
+
+tasks.register('generateCompose') {
+	group = 'docker'
+	def projectName = rootProject.name.toLowerCase()
+	def appVersion = project.version.toString()
+	def appImage = "${projectName}:${appVersion}"
+
+	doFirst {
+		println "Generating docker-compose.yml for image $appImage"
+		def composeTemplate = file('docker-compose.template.yml').text
+		def composeContent = composeTemplate.replace('${APP_IMAGE}', appImage)
+		file('docker-compose.yml').text = composeContent
+	}
+}
+
+tasks.register('runWithDocker', Exec) {
+	dependsOn 'buildDockerImage', 'generateCompose'
+	group = 'docker'
+	doFirst {
+		println 'Running application using Docker...'
+	}
+	commandLine 'docker-compose', 'up', '--build'
+}
