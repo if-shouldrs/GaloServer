@@ -1,7 +1,7 @@
 FROM amazoncorretto:22-alpine3.17
 
-ARG APP_VERSION
-ARG APP_NAME
+ARG APP_VERSION=1.0.0
+ARG APP_NAME=GaloServer
 ENV APP_NAME=${APP_NAME}
 
   # Set the working directory in the container
